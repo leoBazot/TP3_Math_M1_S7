@@ -1,0 +1,99 @@
+from mip import *
+from costs import create_coef
+from band import Band
+from ine import *
+
+"""
+num % 5
+0 245cm
+1 283cm
+2 255cm
+3 271cm
+4 292cm
+"""
+max_widths = [245, 283, 255, 271, 292]
+
+"""
+num % 4
+0 A : 90cm, B :80cm, C :65cm, D :63cm, E :57cm
+1 A : 110cm, B :92cm, C :80cm, D :74cm, E :70cm, F :65cm
+2 A : 110cm, B :100cm, C :80cm, D :65cm, E :45cm
+3 A : 85cm, B :80cm, C :75cmcm, D :70cm, E :60cm
+"""
+band_lists = [[90, 80, 65, 63, 57], [110, 92, 80, 74, 70, 65], [110, 100, 80, 65, 45], [85, 80, 75, 70, 60]]
+
+"""
+num % 3
+0 A :15, B :12, C :10, D :9, E :7 (F :3)
+1 A :100, B :80, C :70, D :65, E :60 (F :57)
+2 A :15, B :14, C :13, D :16, E :14, (F :13)
+"""
+price_lists = [[15, 12, 10, 9, 7, 3], [100, 80, 70, 65, 60, 57], [15, 14, 13, 16, 14, 13]]
+
+
+def combinaisons(plan : int, largeur: int, listeBandes: list, listeSelection: list):
+    res = []
+    sumSelection = sum([i.width for i in listeSelection])
+    if sumSelection > largeur :
+        if listeSelection[-2] == plan:
+            res = [listeSelection[:-1]]
+        else:
+            res = []
+    elif sumSelection == largeur:
+        res = [listeSelection]
+    else:
+        for i in range(listeBandes.index(plan), len(listeBandes)):
+            res += combinaisons(listeBandes[i], largeur, listeBandes, listeSelection + [listeBandes[i]])
+    return res
+
+
+def resolve(ine : int):
+    #create model
+    m = Model("paper is money", sense=MAXIMIZE)
+
+    #max width
+    max_width = max_widths[ine % 5]
+
+    #band list
+    band_list = band_lists[ine % 4]
+    price_list = price_lists[ine % 3]
+
+    bands = []
+    for i, b in enumerate(band_list):
+        bands.append(Band(chr(ord('A') + i), b, price_list[i]))
+
+    #Find possible combinations
+    combination = combinaisons(bands[0], max_width, bands, [])
+
+
+    #costs
+    coef_obj = create_coef(ine % 6, combination, max_width)
+
+    # fill model
+    index = range(len(combination))
+
+    varnames = [''.join([str(n) for n in c]) for c in combination]
+
+    var = [m.add_var(v) for v in varnames]
+
+    m.objective = xsum(coef_obj[i] * var[i] for i in index)
+    
+    # constraints
+    test = [(name, coef_obj[i]) for i, name in enumerate(varnames)]
+
+    print(len(test))
+    for t in test:
+        print(t)
+
+if (__name__ == "__main__"):
+    # test léo
+    # resolve(leo)
+
+    # test lisa
+    # resolve(lisa)
+
+    # test théo
+    # resolve(theo)
+
+    # test marie
+    resolve(marie)
