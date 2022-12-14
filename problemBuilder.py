@@ -2,6 +2,7 @@ from mip import *
 from costs import create_coef
 from band import Band
 from ine import *
+from constraints import manageConstraint, ConstraintType
 
 """
 num % 5
@@ -79,11 +80,34 @@ def resolve(ine : int):
     m.objective = xsum(coef_obj[i] * var[i] for i in index)
     
     # constraints
+    constraints = manageConstraint(ine % 7, bands, combination);
+    for c in constraints:
+        if c.type == ConstraintType.INF:
+            m += xsum(c.coefs[i] * var[i] for i in index) >= c.limit
+        elif c.type == ConstraintType.SUP:
+            m += xsum(c.coefs[i] * var[i] for i in index) <= c.limit
+        # THIS CASE SHOULD NEVER HAPPEN BUT YET IS IMPLEMENTED IN CASE OF FUTURE UPDATES
+        # else c.type == ConstraintType.EQUAL:
+        m += xsum(c.coefs[i] * var[i] for i in index) == c.limit
+
+    # lancement de l'optimisation
+    m.optimize()
+
+    if m.status == OptimizationStatus.OPTIMAL:
+        #affichage du resultat
+        for i in index:
+            print(varnames[i] + " = " + str(var[i].x))
+        print("cout total :" + str(m.objective_value))
+    else:
+        print("Pas de solution possible")
+    
+    """ TESTS
     test = [(name, coef_obj[i]) for i, name in enumerate(varnames)]
 
     print(len(test))
     for t in test:
         print(t)
+    """
 
 if (__name__ == "__main__"):
     # test léo
@@ -96,4 +120,5 @@ if (__name__ == "__main__"):
     # resolve(theo)
 
     # test marie
-    resolve(marie)
+    # resolve(marie)
+    pass
