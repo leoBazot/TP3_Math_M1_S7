@@ -12,6 +12,9 @@ class Constraint:
         self.type = type
         self.limit = limit
 
+    def __str__(self) -> str:
+        return f"{self.coefs} {'<=' if self.type == ConstraintType.INF else ('>=' if self.type == ConstraintType.SUP else '=')} {self.limit}"
+
 
 
 # C1 maximum length of paper is 1000m
@@ -31,7 +34,7 @@ def constraint2(bands : list[Band], combination : list[Band]) -> list[Constraint
 def constraint3(bands : list[Band], combination : list[Band]) -> list[Constraint]:
     coefs = []
     for b in bands:
-        coefs.append([(c.count(b) - (0,5 * len(c))) for c in combination])
+        coefs.append([(c.count(b) - (0.5 * len(c))) for c in combination])
     return [Constraint(c, ConstraintType.INF, 0) for c in coefs]
 
 

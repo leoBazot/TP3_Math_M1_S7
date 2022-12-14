@@ -81,14 +81,22 @@ def resolve(ine : int):
     
     # constraints
     constraints = manageConstraint(ine % 7, bands, combination);
+
+    # print(f"max z = {' + '.join([str(coef_obj[i]) + str(name) for i, name in enumerate(varnames)])}")
+    # print(f"avec {', '.join(varnames)} >= 0")
+    # print("et")
     for c in constraints:
+        # print(f"LEN CONSTRAINT : {len(c.coefs)}")
         if c.type == ConstraintType.INF:
-            m += xsum(c.coefs[i] * var[i] for i in index) >= c.limit
-        elif c.type == ConstraintType.SUP:
+            # print(f"{' + '.join([str(c.coefs[i]) + str(name) for i, name in enumerate(varnames)])} <= {c.limit}")
             m += xsum(c.coefs[i] * var[i] for i in index) <= c.limit
+        elif c.type == ConstraintType.SUP:
+            # print(f"{' + '.join([str(c.coefs[i]) + str(name) for i, name in enumerate(varnames)])} >= {c.limit}")
+            m += xsum(c.coefs[i] * var[i] for i in index) >= c.limit
         # THIS CASE SHOULD NEVER HAPPEN BUT YET IS IMPLEMENTED IN CASE OF FUTURE UPDATES
-        # else c.type == ConstraintType.EQUAL:
-        m += xsum(c.coefs[i] * var[i] for i in index) == c.limit
+        elif c.type == ConstraintType.EQUAL:
+            # print(f"{' + '.join([str(c.coefs[i]) + str(name) for i, name in enumerate(varnames)])} = {c.limit}")
+            m += xsum(c.coefs[i] * var[i] for i in index) == c.limit
 
     # lancement de l'optimisation
     m.optimize()
@@ -97,7 +105,7 @@ def resolve(ine : int):
         #affichage du resultat
         for i in index:
             print(varnames[i] + " = " + str(var[i].x))
-        print("cout total :" + str(m.objective_value))
+        print("bénéfice total :" + str(m.objective_value))
     else:
         print("Pas de solution possible")
     
@@ -111,14 +119,21 @@ def resolve(ine : int):
 
 if (__name__ == "__main__"):
     # test léo
-    # resolve(leo)
+    print("-------------------------- Léo --------------------------")
+    resolve(leo)
 
     # test lisa
+    # print()
+    # print("-------------------------- Lisa --------------------------")
     # resolve(lisa)
 
     # test théo
+    # print()
+    # print("-------------------------- Théo --------------------------")
     # resolve(theo)
 
     # test marie
+    # print()
+    # print("-------------------------- Marie --------------------------")
     # resolve(marie)
     pass
