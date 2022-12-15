@@ -1,4 +1,4 @@
-from problemBuilder import resolve
+from src.problemBuilder import resolve
 
 def lazyStudent(ine : int):
     try:
