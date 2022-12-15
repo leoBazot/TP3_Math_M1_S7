@@ -1,9 +1,6 @@
-from src.problemBuilder import resolve
+from problemBuilder import resolve
 
 def lazyStudent(ine : int):
-    try:
-        ine = int(input('Donne ton numéro étudiant je te résout tout ça !'))
-    except ValueError:
-        print('Le numéro étudiant ne contiens aucune lettre (numéro de dossier sur l\'ent')
-        return
+    ipt = input('Donne ton numéro étudiant je te résout tout ça !\n> ')
+    ine = int(ipt)
     resolve(ine)
