@@ -54,10 +54,14 @@ def resolve(ine : int):
 
     #max width
     max_width = max_widths[ine % 5]
+    print(f"Largeur totale : {max_width}cm")
 
     #band list
     band_list = band_lists[ine % 4]
     price_list = price_lists[ine % 3]
+
+    print(f"Largeurs des bandes : {band_list}")
+    print(f"Prix par m des bandes : {price_list}")
 
     bands = []
     for i, b in enumerate(band_list):
@@ -118,9 +122,11 @@ def resolve(ine : int):
     """
 
 if (__name__ == "__main__"):
+    # a bunch of tests
+
     # test léo
-    print("-------------------------- Léo --------------------------")
-    resolve(leo)
+    # print("-------------------------- Léo --------------------------")
+    # resolve(leo)
 
     # test lisa
     # print()
@@ -136,4 +142,9 @@ if (__name__ == "__main__"):
     # print()
     # print("-------------------------- Marie --------------------------")
     # resolve(marie)
+
+    # test liam
+    # print()
+    # print("-------------------------- Liam --------------------------")
+    # resolve(liam)
     pass

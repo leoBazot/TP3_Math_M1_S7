@@ -67,18 +67,25 @@ num  7
 """
 def manageConstraint(num : int, bands : list[Band], combination : list[Band]) -> list[Constraint]:
     if num == 0:
+        print('C1, C3 et C5')
         return constraint1(bands, combination) + constraint3(bands, combination) + constraint5(bands, combination)
     elif num == 1:
+        print('C2, C3 et C5')
         return constraint2(bands, combination) + constraint3(bands, combination) + constraint5(bands, combination)
     elif num == 2:
+        print('C1, C4 et C5')
         return constraint1(bands, combination) + constraint4(bands, combination) + constraint5(bands, combination)
     elif num == 3:
+        print('C2, C4 et C5')
         return constraint2(bands, combination) + constraint4(bands, combination) + constraint5(bands, combination)
     elif num == 4:
+        print('C1, C3 et C6')
         return constraint1(bands, combination) + constraint3(bands, combination) + constraint6(bands, combination)
     elif num == 5:
+        print('C2, C3 et C6')
         return constraint2(bands, combination) + constraint3(bands, combination) + constraint6(bands, combination)
     elif num == 6:
+        print('C1, C4 et C6')
         return constraint1(bands, combination) + constraint4(bands, combination) + constraint6(bands, combination)
     # else
     return []
