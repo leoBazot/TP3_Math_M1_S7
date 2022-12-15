@@ -1,7 +1,7 @@
 from mip import *
 from costs import create_coef
 from band import Band
-from ine import *
+# from ine import *
 from constraints import manageConstraint, ConstraintType
 
 """
