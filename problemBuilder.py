@@ -86,20 +86,20 @@ def resolve(ine : int):
     # constraints
     constraints = manageConstraint(ine % 7, bands, combination);
 
-    # print(f"max z = {' + '.join([str(coef_obj[i]) + str(name) for i, name in enumerate(varnames)])}")
-    # print(f"avec {', '.join(varnames)} >= 0")
-    # print("et")
+    print(f"max z = {' + '.join([str(coef_obj[i]) + str(name) for i, name in enumerate(varnames)])}")
+    print(f"avec {', '.join(varnames)} >= 0")
+    print("et")
     for c in constraints:
         # print(f"LEN CONSTRAINT : {len(c.coefs)}")
         if c.type == ConstraintType.INF:
-            # print(f"{' + '.join([str(c.coefs[i]) + str(name) for i, name in enumerate(varnames)])} <= {c.limit}")
+            print(f"{' + '.join([str(c.coefs[i]) + str(name) for i, name in enumerate(varnames)])} <= {c.limit}")
             m += xsum(c.coefs[i] * var[i] for i in index) <= c.limit
         elif c.type == ConstraintType.SUP:
-            # print(f"{' + '.join([str(c.coefs[i]) + str(name) for i, name in enumerate(varnames)])} >= {c.limit}")
+            print(f"{' + '.join([str(c.coefs[i]) + str(name) for i, name in enumerate(varnames)])} >= {c.limit}")
             m += xsum(c.coefs[i] * var[i] for i in index) >= c.limit
         # THIS CASE SHOULD NEVER HAPPEN BUT YET IS IMPLEMENTED IN CASE OF FUTURE UPDATES
         elif c.type == ConstraintType.EQUAL:
-            # print(f"{' + '.join([str(c.coefs[i]) + str(name) for i, name in enumerate(varnames)])} = {c.limit}")
+            print(f"{' + '.join([str(c.coefs[i]) + str(name) for i, name in enumerate(varnames)])} = {c.limit}")
             m += xsum(c.coefs[i] * var[i] for i in index) == c.limit
 
     # lancement de l'optimisation
@@ -127,24 +127,4 @@ if (__name__ == "__main__"):
     # test léo
     # print("-------------------------- Léo --------------------------")
     # resolve(leo)
-
-    # test lisa
-    # print()
-    # print("-------------------------- Lisa --------------------------")
-    # resolve(lisa)
-
-    # test théo
-    # print()
-    # print("-------------------------- Théo --------------------------")
-    # resolve(theo)
-
-    # test marie
-    # print()
-    # print("-------------------------- Marie --------------------------")
-    # resolve(marie)
-
-    # test liam
-    # print()
-    # print("-------------------------- Liam --------------------------")
-    # resolve(liam)
     pass
